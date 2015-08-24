@@ -4,16 +4,21 @@ var eventHandler = require('./event-handler'),
     channels = require('./channels'),
     connection = {},
     isReady = false,
-    connectionAttempts = 0;
+    connectionAttempts = 0,
+    host = null,
+    endpoint = null;
 
 
 /********************************
  * Get the host and end point
  ********************************/
-function getHost() {
-    var host = window.swampdragon_host,
-        endpoint = window.swampdragon_settings.endpoint;
-
+function getHost(newHost, newEndpoint) {
+    if(newHost){
+        host = newHost;
+        if(newEndpoint){
+            endpoint = newEndpoint;
+        }
+    }
     if (endpoint.indexOf('/') != 0) {
         endpoint = '/' + endpoint
     }
@@ -22,8 +27,8 @@ function getHost() {
     return host;
 }
 
-function connect () {
-    connection.socket = new SockJS(getHost());
+function connect (newHost, newEndpoint) {
+    connection.socket = new SockJS(getHost(newHost, newEndpoint));
     connection.socket.onopen = onopen;
     connection.socket.onclose = onclose;
     connection.socket.onmessage = onmessage;
@@ -41,7 +46,7 @@ function onopen () {
 function onclose (data) {
     connection.socket = null;
     isReady = false;
-    if (connectionAttempt === 0) {
+    if (connectionAttempts === 0) {
         eventHandler.emit('close');
     }
 
@@ -52,11 +57,11 @@ function onclose (data) {
     }
 
     setTimeout(function() {
-        if (connectionAttempt < 10) {
-            connectionAttempt++;
+        if (connectionAttempts < 10) {
+            connectionAttempts++;
             connect();
         }
-    }, (connectionAttempt * 500) + 100);
+    }, (connectionAttempts * 500) + 100);
 }
 
 
@@ -107,7 +112,7 @@ function onmessage (e) {
     eventHandler.emit('message', e);
 }
 
-connect();
+//connect();
 
 module.exports = {
     sockjs: connection,
@@ -116,5 +121,6 @@ module.exports = {
     ready: function () {
         return isReady;
     },
-    on: eventHandler.on
+    on: eventHandler.on,
+    connect: connect
 };
