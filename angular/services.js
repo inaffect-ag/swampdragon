@@ -19,7 +19,7 @@ SwampDragonServices.factory('$dragon', ['$q', '$timeout', function ($q, $timeout
 
             return deferred.promise;
         },
-
+        connect: swampdragon.connect,
         onChannelMessage: swampdragon.onChannelMessage,
         onReady: swampdragon.ready,
 
@@ -58,4 +58,3 @@ SwampDragonServices.factory('$dragon', ['$q', '$timeout', function ($q, $timeout
         }
     };
 }]);
-

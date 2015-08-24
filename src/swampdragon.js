@@ -15,6 +15,8 @@ var swampdragon = swampdragon || {};
 /*********************
  * Connection setup
  *********************/
+swampdragon.connect = connection.connect;
+
 swampdragon.open = function (fn) {
     if (connection.ready()) {
         fn();
