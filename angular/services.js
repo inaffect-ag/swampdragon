@@ -58,4 +58,3 @@ SwampDragonServices.factory('$dragon', ['$q', '$timeout', function ($q, $timeout
         }
     };
 }]);
-
