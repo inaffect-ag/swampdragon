@@ -4,7 +4,11 @@
   "authors": [
     "https://github.com/jonashagstedt/swampdragon"
   ],
-  "main": "./dist/swampdragon.min.js",
+  "main": [
+    "./dist/swampdragon.min.js",
+    "./dist/datamapper.min.js",
+    "./angular/services.js"
+  ],
   "description": "SwampDragon client",
   "moduleType": [
     "globals"
